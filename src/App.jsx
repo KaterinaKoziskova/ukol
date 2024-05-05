@@ -1,29 +1,48 @@
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './Navbar';
+import Home from './Home';
+import ProductDetail from './ProductDetail';
+import Cart from './Cart';
+import Contacts from './Contacts';
 
-function App() {
+const App = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = [
+        { id: 1, name: 'Produkt 1', price: 10 },
+        { id: 2, name: 'Produkt 2', price: 20 },
+        { id: 3, name: 'Produkt 3', price: 30 },
+      ];
+      setProducts(data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            <Home products={products} />
+          </Route>
+          <Route path="/produkt/:id">
+            <ProductDetail products={products} />
+          </Route>
+          <Route path="/kosik">
+            <Cart />
+          </Route>
+          <Route path="/kontakty">
+            <Contacts />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
